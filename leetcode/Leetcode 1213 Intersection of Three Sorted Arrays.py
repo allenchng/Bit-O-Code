@@ -8,7 +8,9 @@ class Solution(object):
         """
         
         # three pointers
-        # check if elements are equal
+        # remember they're sorted, so once you reach the max of an array, no other numbers past that will intersect
+        # first check values equal, if so, iterate all pointers forward
+        # otherwise check max and iterate pointers for other arrays until a match is found or greater max
         
         a = 0
         b = 0

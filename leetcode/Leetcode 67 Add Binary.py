@@ -6,11 +6,15 @@ class Solution(object):
         :rtype: str
         """
 
-      # 99
-      #  2
-     # 101
+      # 11
+      #  1
+     # 100
 
+    # use same principle as add string
+    # binary uses base 2 instead of base 10
+    # common mistakes: forgetting to decrement pointers, remembering to append to front or remember to reverse at end
 
+    
         i = len(a) - 1
         j = len(b) - 1
         
