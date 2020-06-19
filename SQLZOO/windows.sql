@@ -1,4 +1,10 @@
-1.
+/*
+Self JOIN
+*/
+
+
+--#1
+/*
 The example uses a WHERE clause to show the cases in 'Italy' in March.
 
 Modify the query to show data from Spain
@@ -10,7 +16,7 @@ WHERE name = 'Italy'
 AND MONTH(whn) = 3
 ORDER BY whn
 
-
+*/
 
 SELECT name, DAY(whn),
  confirmed, deaths, recovered
