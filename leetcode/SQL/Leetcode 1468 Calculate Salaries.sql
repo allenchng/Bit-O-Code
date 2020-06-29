@@ -1,21 +1,21 @@
-# find max for each company
-# case when to get salary rate
-# join back to salaries table
-# calculate new salaries based on rate
+-- cte to get tax rates
+-- join back to original
+-- calculate new salaries
 
-
-SELECT sal.company_id, sal.employee_id, sal.employee_name, ROUND(salary - (salary*tax_rate)) AS salary
-FROM salaries AS sal
-JOIN (
+WITH tax_rates AS (
     SELECT company_id,
-        CASE WHEN max_salary < 1000 THEN 0
-        WHEN max_salary BETWEEN 1000 AND 10000 THEN 0.24
+        CASE WHEN max_sal < 1000 THEN 0
+        WHEN max_sal >= 1000 AND max_sal <= 10000 THEN 0.24
         ELSE 0.49 END AS tax_rate
     FROM (
-        SELECT company_id, MAX(salary) AS max_salary
+        SELECT company_id, MAX(salary) AS max_sal
         FROM Salaries
         GROUP BY company_id
-    ) AS s1
-) AS s2
-ON sal.company_id = s2.company_id
-ORDER BY company_id, employee_id;
+    ) AS t1
+)
+
+SELECT s.company_id, s.employee_id, s.employee_name,
+    ROUND(s.salary - (s.salary * t.tax_rate), 0) AS salary
+FROM Salaries AS s
+LEFT JOIN tax_rates AS t
+ON s.company_id = t.company_id
