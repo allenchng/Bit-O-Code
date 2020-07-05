@@ -1,6 +1,6 @@
-# reverse fields to get all id's on one side
-# union the results
-# group by id, count the number of distinct friends you have
+-- reverse fields to get all id's on one side
+-- union the results
+-- group by id, count the number of distinct friends you have
 
 SELECT id, COUNT(DISTINCT friend) AS num
 FROM (

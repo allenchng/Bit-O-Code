@@ -1,18 +1,32 @@
+-- cte to get team points hwne host and gues
+-- careful, must use union all to catch if a team ties as host and guest
+-- join to teams to catch any teams that haven't played yet
+-- group by team and aggregate points
 
-# team_id | team_name | num_points
-# win = 3, tie = 1, loss = 0
+WITH points AS (
+    SELECT host_team AS team,
+        SUM(CASE WHEN host_goals > guest_goals THEN 3
+        WHEN host_goals = guest_goals THEN 1
+        ELSE 0 END) AS points
+    FROM Matches AS m
+    GROUP BY host_team
 
-# join match to team 
-# create new field for points
-# aggregate points for each team
+    UNION ALL
 
-SELECT team_id, team_name,
-    SUM(CASE WHEN team_id = host_team AND host_goals > guest_goals THEN 3 ELSE 0 END) +
-    SUM(CASE WHEN team_id = guest_team AND guest_goals > host_goals THEN 3 ELSE 0 END) +
-    SUM(CASE WHEN team_id = host_team AND host_goals = guest_goals THEN 1 ELSE 0 END) +
-    SUM(CASE WHEN team_id = guest_team AND host_goals = guest_goals THEN 1 ELSE 0 END) AS num_points
-FROM Teams AS t
-LEFT JOIN Matches AS m
-ON t.team_id = m.host_team OR t.team_id = m.guest_team
-GROUP BY 1, 2
-ORDER BY 3 DESC, 1 ASC;
+    SELECT guest_team AS team,
+        SUM(CASE WHEN guest_goals > host_goals THEN 3
+           WHEN guest_goals = host_goals THEN 1
+           ELSE 0 END) AS points
+    FROM Matches AS m
+    GROUP BY guest_team
+)
+
+SELECT team_id, team_name, SUM(points) AS num_points
+FROM (
+    SELECT t.team_id, t.team_name, COALESCE(points, 0) AS points
+    FROM Teams AS t
+    LEFT JOIN points AS p
+    ON t.team_id = p.team
+) AS t1
+GROUP BY team_name
+ORDER BY num_points DESC, team_id ASC
