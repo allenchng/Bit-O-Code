@@ -5,6 +5,14 @@
 #         self.left = left
 #         self.right = right
 
+# A binary search tree has at most 2 children nodes, a left and right side. 
+# A common approach to solving binary search tree problems is to use recursion. A recursive function is one that directly or indirectly calls on itself. 
+# The function "bst_helper" is an example of a recursive function. 
+
+# Recursive algorithms always start with a base case. In this case, the first thing that I always want to check is if my current "root" value is between my left and right thresholds. If so, add it to my running total. 
+
+# Next, I check to see if my left child node exists, and if so, call bst_helper. I hope you can see that the recursive function will continue traversing down the left and right side sides of the tree, adding values to total, until it reaches a leaf node points to NULL.
+
 def bst_helper(root, L, R):
     
     total = 0
@@ -30,10 +38,7 @@ class Solution(object):
         :rtype: int
         """
         
-        # recursion
-        # base case, is root value between L and R
-        # if left side exists and it's great than L, recurse down left side
-        # if right side exists and it's less than R, recurse down right side
-        # return total
-        
         return bst_helper(root, L, R)
+
+        # Time complexity: O(n), the worst case scenario is that the tree is perfectly unbalanced. All the values are on the right or all the values are on the left. In this scenario, the time complexity is the number of nodes. 
+        # Space complexity: O(1), the only value that is being updated is total so the space is constant.
